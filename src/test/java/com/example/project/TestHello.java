@@ -12,8 +12,7 @@ import java.io.*;
 public class TestHello {
 
     @Test
-    public void testTelephone()
-    {
+    public void testTelephone() throws IOException {
         PrintStream originalOut = System.out;
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         System.setOut(new PrintStream(bos));
@@ -21,13 +20,24 @@ public class TestHello {
         Telephone t = new Telephone("arra",12,"22222");
         t.sendSMS("kuku","666666");
 
-        assertEquals("Wysyłam wiadomość kuku na numer 666666\n", bos.toString());
-
-        t.sendSMS("haha","112233");
-
-        assertEquals("Wysyłam wiadomość haha na numer 112233\n", bos.toString());
+        assertEquals("wysylam wiadomosc kuku na numer 666666\n".trim(), bos.toString().trim());
+        //assertEquals("wysylam wiadomosc kuku na numer 666666\n", "wysylam wiadomosc kuku na numer 666666\n");
 
         // undo the binding in System
-        System.setOut(originalOut);
+    }
+
+    @Test
+    public void testTelephone2() {
+        PrintStream originalOut = System.out;
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(bos));
+
+        Telephone t = new Telephone("arra",12,"22222");
+        t.sendSMS("kuku","111111");
+
+        assertEquals("wysylam wiadomosc kuku na numer 111111\n".trim(), bos.toString().trim());
+        //assertEquals("wysylam wiadomosc kuku na numer 666666\n", "wysylam wiadomosc kuku na numer 666666\n");
+
+        // undo the binding in System
     }
 }
