@@ -26,16 +26,4 @@ public class TestHello {
                     assertEquals(number,t.number)
                 );
     }
-
-    @Test
-    public void testSendSMS() {
-        PrintStream originalOut = System.out;
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(bos));
-
-        Telephone t = new Telephone("sony",123,"123123");
-        t.sendSMS("kuku","111111");
-
-        assertEquals("wysylam wiadomosc kuku na numer 111111\n".trim(), bos.toString().trim());
-    }
 }
