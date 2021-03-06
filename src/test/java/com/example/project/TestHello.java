@@ -33,7 +33,7 @@ public class TestHello {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         System.setOut(new PrintStream(bos));
 
-        Telephone t = new Telephone("arra",12,"22222");
+        Telephone t = new Telephone();
         t.sendSMS("kuku","111111");
 
         assertEquals("wysylam wiadomosc kuku na numer 111111\n".trim(), bos.toString().trim());
