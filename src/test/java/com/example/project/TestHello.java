@@ -11,20 +11,23 @@ import java.io.*;
 
 public class TestHello {
 
-   @Test
-   public void testHelloWorld()
-   {
-     PrintStream originalOut = System.out;
-     ByteArrayOutputStream bos = new ByteArrayOutputStream();
-     System.setOut(new PrintStream(bos));
+    @Test
+    public void testTelephone()
+    {
+        PrintStream originalOut = System.out;
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(bos));
 
-     // action
-     Hello.main(null);
+        Telephone t = new Telephone("arra",12,"22222");
+        t.sendSMS("kuku","666666");
 
-     // assertion
-     assertEquals("Hello world!\n", bos.toString());
+        assertEquals("Wysyłam wiadomość kuku na numer 666666\n", bos.toString());
 
-     // undo the binding in System
-     System.setOut(originalOut);
-   }
+        t.sendSMS("haha","112233");
+
+        assertEquals("Wysyłam wiadomość haha na numer 112233\n", bos.toString());
+
+        // undo the binding in System
+        System.setOut(originalOut);
+    }
 }
