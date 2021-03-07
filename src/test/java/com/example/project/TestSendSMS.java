@@ -21,6 +21,6 @@ public class TestSendSMS {
         Telephone t = new Telephone("arra",12,"22222");
         t.sendSMS("kuku","111111");
 
-        assertEquals("wysylam wiadomosc kuku na numer 111111\n".trim(), bos.toString().trim());
+        assertEquals(("wysylam wiadomosc kuku na numer 111111\n").trim().toLowerCase(), (bos.toString().trim()).toLowerCase());
     }
 }
