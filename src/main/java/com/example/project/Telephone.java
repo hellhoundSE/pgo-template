@@ -1,11 +1,11 @@
 package com.example.project;
 
 public class Telephone {
-    String model;
-    double resolution;
+    private String model;
+    private double resolution;
     String number;
 
-    public Telephone(String model, double resolution, String number) {
+    public Telephone(String number, double resolution, String model ) {
         this.model = model;
         this.resolution = resolution;
         this.number = number;
