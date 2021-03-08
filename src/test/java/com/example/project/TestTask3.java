@@ -13,6 +13,15 @@ public class TestTask3 {
 
 
     @Test
+    public void forTestTests(){
+        Telephone t = GenericTestFactory.getInstance(Telephone.class);
+        GenericTestFactory.testMethod(t, "sendSMS2",
+                "kuku 11 12",new Class[]{String.class,int.class,int.class},new Object[]{"kuku",11,12});
+
+
+    }
+
+    @Test
     public void testCarGetters(){
         String model = "Mazda";
         String color = "Red";

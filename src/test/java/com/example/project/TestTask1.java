@@ -24,6 +24,7 @@ public class TestTask1 {
     @Test
     public void testSendSMS() {
         PrintStream originalOut = System.out;
+
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         System.setOut(new PrintStream(bos));
 
