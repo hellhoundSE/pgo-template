@@ -8,8 +8,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.*;
 
 public final class GenericTestFactory {
 
@@ -49,14 +48,24 @@ public final class GenericTestFactory {
         return instance;
     }
 
-    public static <T,F> boolean testGetter(F instance, String fieldName, T expectedValue){
+    public static void testFieldExists(Class clazz, String field){
+
+        try {
+            assertNotNull(clazz.getDeclaredField(field));
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+            fail();
+        }
+    }
+
+    public static <T,F> void testGetter(F instance, String fieldName, T expectedValue){
 
         Field field = null;
 
         try {
             field = instance.getClass().getDeclaredField(fieldName);
             if(field.isAccessible())
-                return expectedValue.equals(field.get(instance));
+                assertEquals(expectedValue,field.get(instance));
             else {
                 String getterName = "get" + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
 
@@ -65,21 +74,21 @@ public final class GenericTestFactory {
                 }
                     Method method = instance.getClass().getDeclaredMethod(getterName);
                     Object realValue = method.invoke(instance) ;
-                    return expectedValue.equals(realValue);
-                }
+                    assertEquals(expectedValue,field.get(instance));
+            }
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
+            fail();
         }
     }
-    public static <T,F> boolean testSetter(F instance, String fieldName, T expectedValue){
+    public static <T,F> void testSetter(F instance, String fieldName, T expectedValue){
 
         Field field = null;
 
         try {
             field = instance.getClass().getDeclaredField(fieldName);
             if(field.isAccessible())
-                return true;
+                assertTrue(field.isAccessible());
             else {
                 String setterName = "set" + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
 
@@ -93,21 +102,22 @@ public final class GenericTestFactory {
                 boolean result = field.get(instance).equals(expectedValue);
                 field.setAccessible(false);
 
-                return result;
+                assertTrue(result);
             }
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
+            fail();
         }
     }
-    public static <T,F> boolean testSetter(F instance, String fieldName, T expectedValue, boolean isPrimitiveType){
+    public static <T,F> void testSetter(F instance, String fieldName, T expectedValue, boolean isPrimitiveType){
 
         Field field = null;
 
         try {
             field = instance.getClass().getDeclaredField(fieldName);
             if(field.isAccessible())
-                return true;
+                assertTrue(field.isAccessible());
+
             else {
                 String setterName = "set" + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
 
@@ -124,24 +134,15 @@ public final class GenericTestFactory {
                 boolean result = field.get(instance).equals(expectedValue);
                 field.setAccessible(false);
 
-                return result;
+                assertTrue(result);
             }
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
+            fail();
         }
     }
 
-    public static boolean testField(Class clazz,String field){
-        try {
-            Field f = clazz.getDeclaredField(field);
-            return true;
-        } catch (NoSuchFieldException e) {
-            return false;
-        }
-    }
-
-    public static <T> boolean testSystemOutputFromMethod(T instance, String methodName, String expectedOutput, Class[] requiredParameters, Object[] parameters){
+    public static <T> void testSystemOutputFromMethod(T instance, String methodName, String expectedOutput, Class[] requiredParameters, Object[] parameters){
 
         PrintStream originalOut = System.out;
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
@@ -163,11 +164,11 @@ public final class GenericTestFactory {
 
             String realOutput = bos.toString().replaceAll("\\s+", "").toLowerCase();
             expectedOutput = expectedOutput.replaceAll("\\s+", "").toLowerCase();
-            return expectedOutput.equals(realOutput);
+            assertEquals(expectedOutput,realOutput);
 
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
+            fail();
         }finally {
             System.setOut(originalOut);
         }
@@ -335,8 +336,6 @@ public final class GenericTestFactory {
             System.setOut(originalOut);
         }
     }
-
-
 
     private static Class convertToPrimitiveType(Class clazz){
         if(clazz.equals(Boolean.class))     return boolean.class;
